@@ -54,3 +54,8 @@
 - **사용자 제공 실제 사진 적용**: AI 생성 이미지 대신 사용자님이 직접 `images/stone` 폴더에 올려두신 15개의 실제 고화질 천연석 사진으로 `script.js`와 `stones.html`의 모든 원석 이미지 경로를 교체했습니다.
 - **파일명 목록**: GreenAventurine.png, Malachite.png, Peridot.png, Garnet.png, Carnelian.png, RedJasper.png, TigerEye.png, Citrine.png, SmokyQuartz.png, ClearQuartz.png, Hematite.png, WhiteHowlite.png, LapisLazuli.png, BlackObsidian.png, Aquamarine.png (총 15종)
 - **팔찌 이미지**: 개별 팔찌 사진은 아직 준비되지 않아 기존 AI 생성 팔찌 이미지를 임시 유지합니다.
+
+## 13. images/bracelet 폴더의 실제 팔찌 사진으로 전면 연결 (진행완료)
+- **사용자 제공 실제 팔찌 사진 적용**: 사용자님이 직접 `images/bracelet` 폴더에 올려두신 15개의 실제 천연석 팔찌 사진을 `script.js`와 `stones.html`의 모든 팔찌 이미지 경로와 1:1로 연결했습니다.
+- **파일명 규칙**: 원석명_bra.png 형식 (예: GreenAventurine_bra.png)
+- **연결 목록**: GreenAventurine_bra, Malachite_bra, Peridot_bra, Garnet_bra, Carnelian_bra, RedJasper_bra, TigerEye_bra, Citrine_bra, SmokyQuartz_bra, ClearQuartz_bra, Hematite_bra, WhiteHowlite_bra, LapisLazuli_bra, BlackObsidian_bra, Aquamarine_bra (총 15종)

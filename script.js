@@ -12,7 +12,9 @@ const fortuneWealthText = document.getElementById('fortune-wealth-text');
 const fortuneBusinessText = document.getElementById('fortune-business-text');
 const fortuneLoveText = document.getElementById('fortune-love-text');
 
-// ✅ 14가지 개별 천연석 데이터 - 실제 사진 경로 적용 (images/stone 폴더)
+// ✅ 14가지 개별 천연석 데이터
+// 원석 사진: images/stone/원석명.png
+// 팔찌 사진: images/bracelet/원석명_bra.png
 const stones = {
     '목': [
         {
@@ -20,21 +22,21 @@ const stones = {
             short_desc: '성장을 돕고 마음에 평안을 주는 초록빛 원석',
             long_desc: '어벤츄린은 대자연의 싱그러운 생명력을 머금어, 마음 깊은 곳의 불안감을 부드럽게 녹여주고 막혀 있던 일들이 서서히 풀려나가게 돕습니다.',
             image: 'images/stone/GreenAventurine.png',
-            bracelet_image: 'images/aventurine_bracelet_1779798000752.png' // 팔찌는 임시 유지
+            bracelet_image: 'images/bracelet/GreenAventurine_bra.png'
         },
         {
             name: '말라카이트 (Malachite)',
             short_desc: '강력한 치유와 보호, 내면의 성장을 돕는 원석',
             long_desc: '말라카이트는 부정적인 에너지를 흡수하고 마음의 상처를 깊숙이 치유하며, 정체된 기운을 뚫고 나갈 수 있는 강한 생명력을 부여해 줍니다.',
             image: 'images/stone/Malachite.png',
-            bracelet_image: 'images/wood_bracelet_1779799633333.png' // 팔찌는 임시 유지
+            bracelet_image: 'images/bracelet/Malachite_bra.png'
         },
         {
             name: '페리도트 (Peridot)',
             short_desc: '부정적인 감정을 씻어내고 번영을 이끄는 원석',
             long_desc: '페리도트는 태양의 에너지를 담아 두려움과 원망을 씻어내며, 긍정적인 방향을 바라보게 하고 삶에 맑고 밝은 활력을 불어넣어 줍니다.',
             image: 'images/stone/Peridot.png',
-            bracelet_image: 'images/wood_bracelet_1779799633333.png' // 팔찌는 임시 유지
+            bracelet_image: 'images/bracelet/Peridot_bra.png'
         }
     ],
     '화': [
@@ -43,21 +45,21 @@ const stones = {
             short_desc: '열정과 활력을 채워주는 진홍빛 원석',
             long_desc: '가넷은 꺼지지 않는 뜨거운 열망을 끌어올려, 삶에 강력한 추진력과 흔들림 없는 자신감을 불어넣어 주는 불의 상징입니다.',
             image: 'images/stone/Garnet.png',
-            bracelet_image: 'images/garnet_bracelet_1779798015297.png'
+            bracelet_image: 'images/bracelet/Garnet_bra.png'
         },
         {
             name: '카넬리안 (Carnelian)',
             short_desc: '용기와 동기 부여, 창의성을 일깨우는 원석',
             long_desc: '카넬리안은 무기력함을 씻어내고 온몸에 활기를 돌게 하며, 목표를 향해 나아갈 때 마주치는 장애물을 뛰어넘을 에너지를 줍니다.',
             image: 'images/stone/Carnelian.png',
-            bracelet_image: 'images/fire_bracelet_1779799661670.png'
+            bracelet_image: 'images/bracelet/Carnelian_bra.png'
         },
         {
             name: '레드 재스퍼 (Red Jasper)',
             short_desc: '안정감과 체력, 깊은 인내심을 주는 원석',
             long_desc: '레드 재스퍼는 불의 기운을 다독이며 끈기와 체력을 더해주어, 어떤 상황에서도 쉽게 지치지 않고 목표에 도달할 수 있도록 돕습니다.',
             image: 'images/stone/RedJasper.png',
-            bracelet_image: 'images/fire_bracelet_1779799661670.png'
+            bracelet_image: 'images/bracelet/RedJasper_bra.png'
         }
     ],
     '토': [
@@ -66,21 +68,21 @@ const stones = {
             short_desc: '중심을 잡아주고 든든한 재물운을 돕는 원석',
             long_desc: '호안석은 흔들리는 마음에 단단한 뿌리를 내리게 하며, 결단력이 필요한 순간 예리한 판단을 돕고 금전적인 기운을 끌어모아 줍니다.',
             image: 'images/stone/TigerEye.png',
-            bracelet_image: 'images/tigers_eye_bracelet_1779798035225.png'
+            bracelet_image: 'images/bracelet/TigerEye_bra.png'
         },
         {
             name: '시트린 (Citrine)',
             short_desc: '금전운과 풍요, 그리고 자신감을 심어주는 원석',
             long_desc: '시트린은 따뜻한 햇살 같은 에너지를 발산하여 내면의 부정적인 생각을 지우고 풍요로움과 부를 끌어당기는 자석 역할을 합니다.',
             image: 'images/stone/Citrine.png',
-            bracelet_image: 'images/earth_bracelet_1779799692962.png'
+            bracelet_image: 'images/bracelet/Citrine_bra.png'
         },
         {
             name: '스모키 쿼츠 (Smoky Quartz)',
             short_desc: '현실 감각과 스트레스 해소를 돕는 흑갈색 원석',
             long_desc: '스모키 쿼츠는 주변의 나쁜 기운으로부터 자신을 방어하고, 과도한 생각과 스트레스를 땅으로 흘려보내어 안정감을 선사합니다.',
             image: 'images/stone/SmokyQuartz.png',
-            bracelet_image: 'images/earth_bracelet_1779799692962.png'
+            bracelet_image: 'images/bracelet/SmokyQuartz_bra.png'
         }
     ],
     '금': [
@@ -89,21 +91,21 @@ const stones = {
             short_desc: '맑고 깨끗한 에너지로 정화해 주는 투명 원석',
             long_desc: '백수정은 주변의 나쁜 에너지를 스펀지처럼 흡수하고 안개가 걷힌 맑은 하늘처럼 머릿속을 명쾌하게 비워 이성적인 판단을 극대화합니다.',
             image: 'images/stone/ClearQuartz.png',
-            bracelet_image: 'images/clear_quartz_bracelet_1779798049164.png'
+            bracelet_image: 'images/bracelet/ClearQuartz_bra.png'
         },
         {
             name: '헤마타이트 (Hematite)',
             short_desc: '강력한 집중력과 굳건한 방어력을 지닌 원석',
             long_desc: '헤마타이트는 외부의 스트레스와 부정적인 영향을 강하게 차단하며, 차분하게 이성을 찾고 문제의 핵심에 집중할 수 있도록 돕습니다.',
             image: 'images/stone/Hematite.png',
-            bracelet_image: 'images/clear_quartz_bracelet_1779798049164.png'
+            bracelet_image: 'images/bracelet/Hematite_bra.png'
         },
         {
             name: '화이트 하울라이트 (White Howlite)',
             short_desc: '분노를 조절하고 깊은 평온함을 주는 원석',
             long_desc: '화이트 하울라이트는 극도로 예민해진 신경을 가라앉히고 불필요한 감정 소모를 끊어내어 내면의 완전한 평화를 되찾도록 돕습니다.',
             image: 'images/stone/WhiteHowlite.png',
-            bracelet_image: 'images/clear_quartz_bracelet_1779798049164.png'
+            bracelet_image: 'images/bracelet/WhiteHowlite_bra.png'
         }
     ],
     '수': [
@@ -112,14 +114,14 @@ const stones = {
             short_desc: '깊은 통찰력과 진실된 소통을 이끄는 푸른 원석',
             long_desc: '라피스 라줄리는 마음속 깊은 곳의 진실을 마주하게 하고, 복잡한 문제를 마주했을 때 지혜롭고 순리대로 해결할 수 있는 직관력을 줍니다.',
             image: 'images/stone/LapisLazuli.png',
-            bracelet_image: 'images/aquamarine_bracelet_1779798063598.png'
+            bracelet_image: 'images/bracelet/LapisLazuli_bra.png'
         },
         {
             name: '블랙 옵시디언 (Black Obsidian)',
             short_desc: '나쁜 에너지를 강력히 차단하고 정화하는 흑색 원석',
             long_desc: '블랙 옵시디언은 타인과의 관계에서 오는 부정적 에너지를 거울처럼 반사시켜 막아주며, 막힌 흐름을 빠르고 시원하게 트이게 해줍니다.',
             image: 'images/stone/BlackObsidian.png',
-            bracelet_image: 'images/aquamarine_bracelet_1779798063598.png'
+            bracelet_image: 'images/bracelet/BlackObsidian_bra.png'
         }
     ]
 };
