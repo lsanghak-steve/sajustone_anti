@@ -1,0 +1,170 @@
+/* 전체 화면 기본 설정 (여백 없애기) */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif; /* 읽기 쉬운 글씨체 적용 */
+    background-color: #f7f9fc; /* 눈이 편안한 아주 연한 회파란색 배경 */
+    color: #333333; /* 부드러운 검은색 글씨 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* 화면 전체 높이를 차지하도록 설정 */
+}
+
+/* 가운데 하얀색 메인 박스 디자인 */
+.container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 480px; /* 스마트폰에 맞춰 너무 넓어지지 않게 고정 (반응형) */
+    padding: 40px 30px;
+    border-radius: 20px; /* 모서리를 둥글게 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* 부드러운 그림자 효과 */
+    text-align: center;
+}
+
+/* 제목 글씨 디자인 */
+header h1 {
+    font-size: 24px;
+    color: #5a67d8; /* 차분하고 신뢰감을 주는 파스텔톤 파란색 */
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* 입력창 그룹 (생년월일 등) 정렬 */
+.input-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 칸 사이의 간격 띄우기 */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #4a5568;
+}
+
+/* 실제 텍스트 치는 입력칸 디자인 */
+.form-group input {
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s;
+    font-family: inherit;
+}
+
+/* 입력칸 클릭했을 때 테두리 색상 진해지는 효과 */
+.form-group input:focus {
+    border-color: #5a67d8;
+}
+
+/* '나의 천연석 찾기' 버튼 디자인 */
+.submit-btn {
+    background-color: #5a67d8;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    margin-top: 10px;
+    font-family: inherit;
+}
+
+/* 마우스 올렸을 때 버튼 색상 살짝 어두워지는 효과 */
+.submit-btn:hover {
+    background-color: #4c51bf;
+}
+
+/* 숨김 처리용 (결과 화면은 처음엔 숨겨둠) */
+.hidden {
+    display: none !important;
+}
+
+/* 결과 보여주는 영역 애니메이션 */
+.result-section {
+    margin-top: 20px;
+    animation: fadeIn 0.5s ease-out; /* 부드럽게 나타나는 애니메이션 */
+}
+
+.result-section h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #2d3748;
+}
+
+/* 추천된 천연석 결과 상자 */
+.stone-card {
+    background-color: #f7fafc;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #edf2f7;
+}
+
+/* 이미지 들어갈 빈 공간 */
+.stone-image-placeholder {
+    width: 100%;
+    height: 200px;
+    background-color: #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    background-size: cover;
+    background-position: center;
+}
+
+.stone-card h3 {
+    font-size: 22px;
+    color: #5a67d8;
+    margin-bottom: 10px;
+}
+
+.stone-card p {
+    font-size: 15px;
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+/* 다시 하기 버튼 */
+.reset-btn {
+    background-color: transparent;
+    color: #a0aec0;
+    border: 1px solid #e2e8f0;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.reset-btn:hover {
+    color: #4a5568;
+    border-color: #cbd5e0;
+}
+
+/* 서서히 나타나는 애니메이션 동작 정의 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
