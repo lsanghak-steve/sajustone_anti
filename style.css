@@ -33,6 +33,10 @@ header p { font-size: 14px; color: #666; margin-bottom: 40px; text-align: center
 .submit-btn { background-color: #5a67d8; color: white; border: none; padding: 15px; font-size: 16px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
 .submit-btn:hover { background-color: #4c51bf; }
 
+/* 갤러리로 이동하는 링크 버튼 디자인 */
+.gallery-link-btn { background-color: #ffffff; color: #5a67d8; border: 2px solid #5a67d8; padding: 15px; font-size: 16px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.3s; text-align: center; text-decoration: none; display: block; }
+.gallery-link-btn:hover { background-color: #ebf4ff; }
+
 .hidden { display: none !important; }
 .result-section { margin-top: 20px; animation: fadeIn 0.5s ease-out; }
 
@@ -112,6 +116,10 @@ header p { font-size: 14px; color: #666; margin-bottom: 40px; text-align: center
 .stone-long-desc { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; text-align: left; margin-top: 20px; }
 .stone-long-desc h4 { font-size: 16px; font-weight: 700; color: #2d3748; margin-bottom: 10px; }
 .stone-long-desc p { font-size: 15px; color: #4a5568; line-height: 1.7; white-space: pre-wrap; }
+
+/* 전체 갤러리 페이지 전용 레이아웃 */
+.gallery-container { max-width: 1000px; text-align: center; }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
 
 .reset-btn { background-color: transparent; color: #a0aec0; border: 1px solid #e2e8f0; padding: 10px 20px; font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.3s; display: block; margin: 0 auto; margin-top: 40px; }
 .reset-btn:hover { color: #4a5568; border-color: #cbd5e0; }
