@@ -187,8 +187,14 @@ form.addEventListener('submit', function(event) {
     recommendedList.forEach(stone => {
         recommendedStonesContainer.innerHTML += `
             <div class="stone-card">
-                <div class="stone-image-placeholder" style="background-image: url('${stone.image}');"></div>
-                <div class="bracelet-image-placeholder" style="background-image: url('${stone.bracelet_image}');"></div>
+                <!-- 원석 이미지: 클릭하면 새 탭으로 구매 페이지 열기 (href는 추후 실제 URL로 교체) -->
+                <a href="#" target="_blank" class="stone-image-link">
+                    <div class="stone-image-placeholder" style="background-image: url('${stone.image}');"></div>
+                </a>
+                <!-- 팔찌 이미지: 클릭하면 새 탭으로 구매 페이지 열기 (href는 추후 실제 URL로 교체) -->
+                <a href="#" target="_blank" class="stone-image-link">
+                    <div class="bracelet-image-placeholder" style="background-image: url('${stone.bracelet_image}');"></div>
+                </a>
                 <h3>${stone.name}</h3>
                 <p class="stone-short-desc">${stone.short_desc}</p>
                 <div class="stone-long-desc">
