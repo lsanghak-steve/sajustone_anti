@@ -122,6 +122,13 @@ const stones = {
             long_desc: '블랙 옵시디언은 타인과의 관계에서 오는 부정적 에너지를 거울처럼 반사시켜 막아주며, 막힌 흐름을 빠르고 시원하게 트이게 해줍니다.',
             image: 'images/stone/BlackObsidian.png',
             bracelet_image: 'images/bracelet/BlackObsidian_bra.png'
+        },
+        {
+            name: '아쿠아마린 (Aquamarine)',
+            short_desc: '막힌 흐름을 원활하게 해주고 깊은 지혜를 주는 푸른 원석',
+            long_desc: '아쿠아마린은 잔잔한 바다의 에너지를 담아, 굳어있던 마음을 촉촉하게 적시고 타인과의 관계를 부드럽고 매끄럽게 연결해 줍니다. 마음속에 담아둔 진심을 가장 아름다운 언어로 표현할 수 있는 소통의 마법을 선사합니다.',
+            image: 'images/stone/Aquamarine.png',
+            bracelet_image: 'images/bracelet/Aquamarine_bra.png'
         }
     ]
 };

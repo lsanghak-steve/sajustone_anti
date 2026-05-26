@@ -59,3 +59,7 @@
 - **사용자 제공 실제 팔찌 사진 적용**: 사용자님이 직접 `images/bracelet` 폴더에 올려두신 15개의 실제 천연석 팔찌 사진을 `script.js`와 `stones.html`의 모든 팔찌 이미지 경로와 1:1로 연결했습니다.
 - **파일명 규칙**: 원석명_bra.png 형식 (예: GreenAventurine_bra.png)
 - **연결 목록**: GreenAventurine_bra, Malachite_bra, Peridot_bra, Garnet_bra, Carnelian_bra, RedJasper_bra, TigerEye_bra, Citrine_bra, SmokyQuartz_bra, ClearQuartz_bra, Hematite_bra, WhiteHowlite_bra, LapisLazuli_bra, BlackObsidian_bra, Aquamarine_bra (총 15종)
+
+## 14. 수(水) 기운에 아쿠아마린 추가 (진행완료)
+- **데이터 추가**: `script.js`의 수(水) 배열에 아쿠아마린(Aquamarine) 원석 데이터를 추가했습니다. 원석 사진: `images/stone/Aquamarine.png`, 팔찌 사진: `images/bracelet/Aquamarine_bra.png`
+- **갤러리 업데이트**: `stones.html`의 수(水) 섹션에 아쿠아마린 카드를 추가하여 총 14개 → 15개(수 기운 2개 → 3개)로 확장되었습니다.
