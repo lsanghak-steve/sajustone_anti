@@ -33,6 +33,12 @@ header p { font-size: 14px; color: #666; margin-bottom: 40px; text-align: center
 .submit-btn { background-color: #5a67d8; color: white; border: none; padding: 15px; font-size: 16px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
 .submit-btn:hover { background-color: #4c51bf; }
 
+/* 양력/음력 토글 버튼 디자인 */
+.calendar-toggle { display: flex; gap: 10px; }
+.toggle-btn { flex: 1; padding: 12px; font-size: 15px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.25s; border: 2px solid #e2e8f0; background-color: #f7fafc; color: #a0aec0; font-family: 'Noto Sans KR', sans-serif; }
+.toggle-btn.active { background-color: #5a67d8; color: white; border-color: #5a67d8; }
+.toggle-btn:hover:not(.active) { border-color: #5a67d8; color: #5a67d8; }
+
 /* 갤러리로 이동하는 링크 버튼 디자인 */
 .gallery-link-btn { background-color: #ffffff; color: #5a67d8; border: 2px solid #5a67d8; padding: 15px; font-size: 16px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.3s; text-align: center; text-decoration: none; display: block; }
 .gallery-link-btn:hover { background-color: #ebf4ff; }

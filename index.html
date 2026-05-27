@@ -26,12 +26,22 @@
                     <input type="text" id="user-name" placeholder="이름을 입력하세요" required>
                 </div>
                 <div class="form-group">
+                    <label>양력 / 음력</label>
+                    <!-- 양력/음력 선택 토글 버튼 -->
+                    <div class="calendar-toggle">
+                        <button type="button" id="btn-solar" class="toggle-btn active" onclick="setCalendar('solar')">☀️ 양력</button>
+                        <button type="button" id="btn-lunar" class="toggle-btn" onclick="setCalendar('lunar')">🌙 음력</button>
+                    </div>
+                    <input type="hidden" id="calendar-type" value="solar">
+                </div>
+                <div class="form-group">
                     <label for="birth-date">생년월일</label>
                     <input type="date" id="birth-date" required>
                 </div>
                 <div class="form-group">
                     <label for="birth-time">태어난 시간 (선택)</label>
-                    <input type="time" id="birth-time">
+                    <!-- value="06:00" 으로 오전이 기본값으로 자동 설정됩니다 -->
+                    <input type="time" id="birth-time" value="06:00">
                 </div>
                 <button type="submit" class="submit-btn">사주 분석하기</button>
                 <!-- 새로 추가된 전체 갤러리 이동 버튼 -->
@@ -45,6 +55,8 @@
                 <div class="result-header">
                     <span class="result-label">RESULT</span>
                     <h2 id="result-title">이상학님의 오행 결과</h2>
+                    <!-- 양력/음력, 생년월일, 시간 정보가 여기에 표시됩니다 -->
+                    <p id="result-sub-info" style="margin-top: 6px; font-size: 14px; color: #718096; font-weight: 500;"></p>
                 </div>
 
                 <!-- 사주 4기둥 카드 영역 -->

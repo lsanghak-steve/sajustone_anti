@@ -6,6 +6,15 @@ const resetBtn = document.getElementById('reset-btn');
 const elementText = document.getElementById('element-text');
 const recommendedStonesContainer = document.getElementById('recommended-stones-container');
 
+// ✅ 양력/음력 토글 함수 - 버튼 클릭 시 호출됩니다
+function setCalendar(type) {
+    document.getElementById('calendar-type').value = type;
+    // 양력 버튼 활성화 상태 전환
+    document.getElementById('btn-solar').classList.toggle('active', type === 'solar');
+    // 음력 버튼 활성화 상태 전환
+    document.getElementById('btn-lunar').classList.toggle('active', type === 'lunar');
+}
+
 const sajuOverallText = document.getElementById('saju-overall-text');
 const fortuneGeneralText = document.getElementById('fortune-general-text');
 const fortuneWealthText = document.getElementById('fortune-wealth-text');
@@ -147,10 +156,24 @@ form.addEventListener('submit', function(event) {
 
     const userName = document.getElementById('user-name').value;
     const birthDate = document.getElementById('birth-date').value;
+    const birthTime = document.getElementById('birth-time').value;
+    // 양력/음력 선택 값 가져오기
+    const calendarType = document.getElementById('calendar-type').value;
+    const calendarLabel = calendarType === 'solar' ? '양력' : '음력';
+    // 시간 표시용 레이블 (오전/오후 구분)
+    let timeLabel = '';
+    if (birthTime) {
+        const hour = parseInt(birthTime.split(':')[0]);
+        timeLabel = (hour < 12 ? ' 오전 ' : ' 오후 ') + birthTime;
+    }
 
     if (!userName || !birthDate) return;
 
+    // 결과 제목에 이름, 양력/음력, 시간 정보 표시
     resultTitle.innerText = userName + '님의 오행 결과';
+    // 생년월일 + 양력/음력 + 시간 정보를 부제목으로 표시
+    document.getElementById('result-sub-info').innerText =
+        calendarLabel + ' ' + birthDate + (timeLabel ? timeLabel : '');
 
     // 오행 막대 그래프 (Mock 데이터)
     const mockCounts = { 'wood': 3, 'fire': 1, 'earth': 2, 'metal': 1, 'water': 1 };
@@ -212,7 +235,10 @@ form.addEventListener('submit', function(event) {
 resetBtn.addEventListener('click', function() {
     document.getElementById('user-name').value = '';
     document.getElementById('birth-date').value = '';
-    document.getElementById('birth-time').value = '';
+    // 다시하기 시 오전(06:00)으로 기본값 복원
+    document.getElementById('birth-time').value = '06:00';
+    // 양력으로 초기화
+    setCalendar('solar');
     resultSection.classList.add('hidden');
     form.classList.remove('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
