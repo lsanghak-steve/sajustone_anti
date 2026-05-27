@@ -79,18 +79,23 @@ async function convertLunarToSolar(year, month, day, apiKey) {
     const data = await response.json();
     const xmlString = data.contents;
     
-    if (!xmlString) {
-        throw new Error('공공데이터 서버로부터 응답 데이터를 받지 못했습니다.');
+    if (!xmlString || xmlString.includes('Unauthorized') || xmlString.includes('unauthorized') || xmlString.trim() === 'Unauthorized') {
+        throw new Error('공공데이터 API 인증키가 아직 활성화되지 않았거나 승인 대기 중입니다. (포털에서 가입 완료 및 승인 후 실제 연동 적용까지 약 1~2시간 가량 소요될 수 있습니다.)');
     }
     
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
     
+    const parserError = xmlDoc.getElementsByTagName('parsererror')[0];
+    if (parserError) {
+        throw new Error('공공데이터 응답 데이터 해석에 실패했습니다. (인증키 미등록 또는 서비스 차단 상태)');
+    }
+    
     const resultCode = xmlDoc.getElementsByTagName('resultCode')[0]?.textContent;
     const resultMsg = xmlDoc.getElementsByTagName('resultMsg')[0]?.textContent || '상세 사유 없음';
     
-    if (resultCode !== '00') {
-        throw new Error(`${resultMsg} (오류 코드: ${resultCode})`);
+    if (!resultCode || resultCode !== '00') {
+        throw new Error(`${resultMsg} (인증 상태 점검 필요, 코드: ${resultCode || '없음'})`);
     }
     
     const solYear = xmlDoc.getElementsByTagName('solYear')[0]?.textContent;
@@ -134,18 +139,23 @@ async function convertSolarToLunar(year, month, day, apiKey) {
     const data = await response.json();
     const xmlString = data.contents;
     
-    if (!xmlString) {
-        throw new Error('공공데이터 서버로부터 응답 데이터를 받지 못했습니다.');
+    if (!xmlString || xmlString.includes('Unauthorized') || xmlString.includes('unauthorized') || xmlString.trim() === 'Unauthorized') {
+        throw new Error('공공데이터 API 인증키가 아직 활성화되지 않았거나 승인 대기 중입니다. (포털에서 가입 완료 및 승인 후 실제 연동 적용까지 약 1~2시간 가량 소요될 수 있습니다.)');
     }
     
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
     
+    const parserError = xmlDoc.getElementsByTagName('parsererror')[0];
+    if (parserError) {
+        throw new Error('공공데이터 응답 데이터 해석에 실패했습니다. (인증키 미등록 또는 서비스 차단 상태)');
+    }
+    
     const resultCode = xmlDoc.getElementsByTagName('resultCode')[0]?.textContent;
     const resultMsg = xmlDoc.getElementsByTagName('resultMsg')[0]?.textContent || '상세 사유 없음';
     
-    if (resultCode !== '00') {
-        throw new Error(`${resultMsg} (오류 코드: ${resultCode})`);
+    if (!resultCode || resultCode !== '00') {
+        throw new Error(`${resultMsg} (인증 상태 점검 필요, 코드: ${resultCode || '없음'})`);
     }
     
     const lunYear = xmlDoc.getElementsByTagName('lunYear')[0]?.textContent;
