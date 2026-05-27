@@ -20,6 +20,10 @@
         <!-- 정보 입력 폼 -->
         <main>
             <form id="saju-form" class="input-form">
+                <!-- API 키 설정 버튼 -->
+                <div class="api-settings-container" style="text-align: right; margin-bottom: 5px;">
+                    <button type="button" id="btn-api-settings" class="api-settings-btn">⚙️ API 키 설정</button>
+                </div>
                 <!-- 이름 입력칸 추가 -->
                 <div class="form-group">
                     <label for="user-name">이름</label>
@@ -207,6 +211,23 @@
         </main>
     </div>
     
+    <!-- API 키 설정을 위한 모달 창 -->
+    <div id="api-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-api-modal">&times;</span>
+            <h3>공공데이터 API 설정</h3>
+            <p class="modal-desc">음력 생년월일 변환에 필요한 한국천문연구원 API 서비스 키(Service Key)를 입력해주세요.</p>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="api-key-input" style="font-size: 13px; font-weight: 500; color: #4a5568; display: block; margin-bottom: 8px;">서비스 키 (인증키)</label>
+                <input type="password" id="api-key-input" placeholder="발급받은 인증키를 입력하세요" style="width: 100%; padding: 12px; font-size: 14px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none;">
+            </div>
+            <div class="modal-buttons">
+                <button type="button" id="save-api-key-btn" class="modal-btn save-btn">저장하기</button>
+                <button type="button" id="delete-api-key-btn" class="modal-btn delete-btn">삭제</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

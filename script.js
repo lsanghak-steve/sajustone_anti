@@ -15,6 +15,91 @@ function setCalendar(type) {
     document.getElementById('btn-lunar').classList.toggle('active', type === 'lunar');
 }
 
+// ✅ API 키 설정 모달 제어용 DOM 요소들을 가져옵니다
+const apiModal = document.getElementById('api-modal');
+const btnApiSettings = document.getElementById('btn-api-settings');
+const closeApiModal = document.getElementById('close-api-modal');
+const apiKeyInput = document.getElementById('api-key-input');
+const saveApiKeyBtn = document.getElementById('save-api-key-btn');
+const deleteApiKeyBtn = document.getElementById('delete-api-key-btn');
+
+// 페이지가 켜졌을 때 기존에 저장해둔 API 키가 있다면 입력창에 적어두고, 없다면 .env 파일에서 자동으로 읽어옵니다.
+document.addEventListener('DOMContentLoaded', async () => {
+    let savedKey = localStorage.getItem('saju_api_key');
+    
+    // 로컬 저장소에 저장된 키가 없는 경우, .env 파일로부터 키를 자동으로 가져오기를 시도합니다.
+    if (!savedKey) {
+        try {
+            const response = await fetch('.env');
+            if (response.ok) {
+                const text = await response.text();
+                // .env 파일의 내용을 한 줄씩 나누어 SAJU_API_KEY 항목이 있는지 찾습니다.
+                const lines = text.split('\n');
+                for (let line of lines) {
+                    const trimmedLine = line.trim();
+                    if (trimmedLine.startsWith('SAJU_API_KEY=')) {
+                        const envKey = trimmedLine.split('=')[1]?.trim();
+                        if (envKey) {
+                            savedKey = envKey;
+                            // 자동으로 가져온 키를 로컬 저장소에 저장하여 이후 사용 시에도 바로 적용되게 합니다.
+                            localStorage.setItem('saju_api_key', envKey);
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            // 로컬 서버가 아닌 상태에서 파일을 직접 실행하거나, 배포 환경에서 .env가 없더라도 에러로 멈추지 않고 넘어갑니다.
+            console.log('.env 파일을 불러올 수 없어 수동 키 등록 대기 상태로 전환합니다.', error);
+        }
+    }
+    
+    if (savedKey) {
+        apiKeyInput.value = savedKey;
+    }
+});
+
+// 'API 설정' 버튼을 누르면 모달 팝업창을 띄웁니다
+btnApiSettings.addEventListener('click', () => {
+    apiModal.classList.add('show');
+    const savedKey = localStorage.getItem('saju_api_key');
+    if (savedKey) {
+        apiKeyInput.value = savedKey;
+    }
+});
+
+// 닫기(X) 버튼을 누르면 모달 팝업창을 닫습니다
+closeApiModal.addEventListener('click', () => {
+    apiModal.classList.remove('show');
+});
+
+// 모달 바깥의 어두운 배경을 누르면 팝업창을 닫습니다
+window.addEventListener('click', (event) => {
+    if (event.target === apiModal) {
+        apiModal.classList.remove('show');
+    }
+});
+
+// '저장하기' 버튼을 누르면 입력한 인증키를 브라우저 저장소(LocalStorage)에 안전하게 임시 보관합니다
+saveApiKeyBtn.addEventListener('click', () => {
+    const key = apiKeyInput.value.trim();
+    if (!key) {
+        alert('API 인증키를 입력해주세요.');
+        return;
+    }
+    localStorage.setItem('saju_api_key', key);
+    alert('API 인증키가 안전하게 저장되었습니다.');
+    apiModal.classList.remove('show');
+});
+
+// '삭제' 버튼을 누르면 브라우저에 보관 중이던 인증키를 지웁니다
+deleteApiKeyBtn.addEventListener('click', () => {
+    localStorage.removeItem('saju_api_key');
+    apiKeyInput.value = '';
+    alert('저장된 API 인증키가 삭제되었습니다.');
+    apiModal.classList.remove('show');
+});
+
 const sajuOverallText = document.getElementById('saju-overall-text');
 const fortuneGeneralText = document.getElementById('fortune-general-text');
 const fortuneWealthText = document.getElementById('fortune-wealth-text');
@@ -151,31 +236,131 @@ const sajuTexts = {
     love: `올해의 연애 및 대인관계 운은 '따뜻한 봄바람에 활짝 핀 도화꽃'처럼 화사하고 아름답습니다. 싱글이신 분이라면 올봄부터 여름 사이에 당신의 마음을 단번에 사로잡을 운명적인 인연이 나타날 가능성이 매우 큽니다. 이미 연인이 있거나 기혼자이신 경우에는 두 사람 사이의 애정이 그 어느 때보다 깊고 단단해집니다. 대인관계에서도 당신의 부드러운 매력과 소통 능력이 빛을 발하여, 어딜 가나 사람들의 중심에 서게 됩니다.`
 };
 
-form.addEventListener('submit', function(event) {
+// ✅ 한국천문연구원 API를 활용하여 음력 날짜를 양력 날짜로 변환해주는 비동기 함수입니다.
+// 이 함수는 음력 생년월일을 받아 공공데이터포털 API를 호출하고 실제 양력 날짜로 변환해줍니다.
+async function convertLunarToSolar(year, month, day, apiKey) {
+    // 음력 정보를 기반으로 양력 변환 API의 주소를 작성합니다.
+    const apiUrl = `http://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getSolCalInfo?lunYear=${year}&lunMonth=${month}&lunDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}`;
+    
+    // 브라우저의 CORS 차단 에러를 우회하기 위해 무료 오픈 프록시(allorigins)를 경유하여 요청합니다.
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
+    
+    const response = await fetch(proxyUrl);
+    if (!response.ok) {
+        throw new Error('프록시 서버 응답에 실패했습니다. 네트워크 상태를 확인해주세요.');
+    }
+    
+    const data = await response.json();
+    const xmlString = data.contents;
+    
+    if (!xmlString) {
+        throw new Error('공공데이터 서버로부터 응답 데이터를 받지 못했습니다.');
+    }
+    
+    // 받아온 XML 형태의 문자열을 웹 브라우저가 읽을 수 있는 DOM 구조로 변환합니다.
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+    
+    // API 응답 결과 코드와 결과 메시지를 추출합니다.
+    const resultCode = xmlDoc.getElementsByTagName('resultCode')[0]?.textContent;
+    const resultMsg = xmlDoc.getElementsByTagName('resultMsg')[0]?.textContent || '상세 사유 없음';
+    
+    // 결과 코드가 00(정상)이 아니면 에러를 던져 예외 처리를 유도합니다.
+    if (resultCode !== '00') {
+        throw new Error(`${resultMsg} (오류 코드: ${resultCode})`);
+    }
+    
+    // 변환된 양력 연, 월, 일 값을 가져옵니다.
+    const solYear = xmlDoc.getElementsByTagName('solYear')[0]?.textContent;
+    const solMonth = xmlDoc.getElementsByTagName('solMonth')[0]?.textContent;
+    const solDay = xmlDoc.getElementsByTagName('solDay')[0]?.textContent;
+    
+    if (!solYear || !solMonth || !solDay) {
+        throw new Error('양력 변환 데이터가 누락되었거나 올바르지 않습니다.');
+    }
+    
+    // 월과 일이 한 자리 수일 경우 앞에 0을 붙여 두 자리로 포맷팅합니다 (예: 9 -> 09)
+    return {
+        year: solYear,
+        month: solMonth.padStart(2, '0'),
+        day: solDay.padStart(2, '0')
+    };
+}
+
+// 사주 분석하기 폼 제출 시 작동할 비동기 리스너입니다.
+form.addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const userName = document.getElementById('user-name').value;
     const birthDate = document.getElementById('birth-date').value;
     const birthTime = document.getElementById('birth-time').value;
-    // 양력/음력 선택 값 가져오기
     const calendarType = document.getElementById('calendar-type').value;
-    const calendarLabel = calendarType === 'solar' ? '양력' : '음력';
-    // 시간 표시용 레이블 (오전/오후 구분)
+    
+    if (!userName || !birthDate) return;
+
+    // 분석 버튼을 로딩 상태로 만들어 중복 클릭을 방지합니다.
+    const submitBtn = form.querySelector('.submit-btn');
+    const originalBtnText = submitBtn.innerText;
+    submitBtn.disabled = true;
+    submitBtn.innerText = '음력 날짜 변환 및 사주 분석 중...';
+
+    // 사주 오행 계산의 기준이 될 최종 양력 날짜 변수들
+    let targetYear, targetMonth, targetDay;
+    const dateParts = birthDate.split('-'); // [연, 월, 일] 분리
+    
+    // 결과 화면에 띄워줄 생년월일 표기 텍스트
+    let resultSubText = '';
+
+    if (calendarType === 'lunar') {
+        // 음력을 선택한 경우, 로컬 저장소에서 사용자가 입력해 둔 API 키를 가져옵니다.
+        const apiKey = localStorage.getItem('saju_api_key');
+        
+        if (!apiKey) {
+            // API 키가 보관되어 있지 않을 때 (대비책 작동)
+            alert('💡 음력 변환을 위한 API 인증키가 설정되지 않았습니다.\n우측 상단의 [⚙️ API 키 설정]에서 인증키를 등록하시면 정확한 음력 사주 분석이 가능합니다.\n\n현재는 입력하신 날짜를 임시 양력 날짜로 전환하여 분석을 진행합니다.');
+            targetYear = dateParts[0];
+            targetMonth = dateParts[1];
+            targetDay = dateParts[2];
+            resultSubText = `음력 ${birthDate} (양력 임시 대체)`;
+        } else {
+            // API 키가 있을 경우 실제 공공데이터 OpenAPI 호출을 시도합니다.
+            try {
+                const solarData = await convertLunarToSolar(dateParts[0], dateParts[1], dateParts[2], apiKey);
+                targetYear = solarData.year;
+                targetMonth = solarData.month;
+                targetDay = solarData.day;
+                resultSubText = `음력 ${birthDate} (양력 변환: ${targetYear}-${targetMonth}-${targetDay})`;
+            } catch (error) {
+                // API 호출 중 키 오류, 네트워크 오류 등이 생겼을 때 (대비책 작동)
+                console.error(error);
+                alert(`⚠️ 음력 날짜 변환 중 오류가 발생했습니다.\n\n[오류 설명]: ${error.message}\n\n입력하신 음력 날짜를 임시 양력 날짜로 대체하여 분석을 계속 진행합니다.`);
+                targetYear = dateParts[0];
+                targetMonth = dateParts[1];
+                targetDay = dateParts[2];
+                resultSubText = `음력 ${birthDate} (양력 임시 대체)`;
+            }
+        }
+    } else {
+        // 양력을 선택한 경우 그대로 입력값을 사주 분석에 사용합니다.
+        targetYear = dateParts[0];
+        targetMonth = dateParts[1];
+        targetDay = dateParts[2];
+        resultSubText = `양력 ${birthDate}`;
+    }
+
+    // 태어난 시간 표시용 레이블 (오전/오후 구분)
     let timeLabel = '';
     if (birthTime) {
         const hour = parseInt(birthTime.split(':')[0]);
         timeLabel = (hour < 12 ? ' 오전 ' : ' 오후 ') + birthTime;
     }
 
-    if (!userName || !birthDate) return;
-
-    // 결과 제목에 이름, 양력/음력, 시간 정보 표시
+    // 결과 제목에 사용자 이름 표시
     resultTitle.innerText = userName + '님의 오행 결과';
-    // 생년월일 + 양력/음력 + 시간 정보를 부제목으로 표시
-    document.getElementById('result-sub-info').innerText =
-        calendarLabel + ' ' + birthDate + (timeLabel ? timeLabel : '');
+    // 최종 날짜 + 시간 정보를 결과창 부제목으로 표시
+    document.getElementById('result-sub-info').innerText = resultSubText + (timeLabel ? timeLabel : '');
 
-    // 오행 막대 그래프 (Mock 데이터)
+    // 오행 막대 그래프 (기본 디자인용 Mock 데이터 설정)
     const mockCounts = { 'wood': 3, 'fire': 1, 'earth': 2, 'metal': 1, 'water': 1 };
     const total = 8;
     document.getElementById('bar-wood').style.width = (mockCounts.wood / total * 100) + '%';
@@ -196,25 +381,24 @@ form.addEventListener('submit', function(event) {
     fortuneBusinessText.innerText = sajuTexts.business;
     fortuneLoveText.innerText = sajuTexts.love;
 
-    // 부족한 기운 계산 및 천연석 추천 카드 동적 생성
-    const numbers = birthDate.split('-');
-    const sum = parseInt(numbers[0]) + parseInt(numbers[1]) + parseInt(numbers[2]);
+    // API 변환 성공(혹은 대비책으로 구해진) 양력 날짜 숫자를 합산하여 오행 결과를 정합니다.
+    const sum = parseInt(targetYear) + parseInt(targetMonth) + parseInt(targetDay);
     const elements = ['목', '화', '토', '금', '수'];
     const lackingElement = elements[sum % 5];
     const recommendedList = stones[lackingElement];
 
     elementText.innerHTML = '분석 결과, 사용자님은 <strong>' + lackingElement + '</strong> 기운이 가장 필요합니다.<br>이 기운을 꽉 채워줄 <strong>' + recommendedList.length + '가지 천연석</strong>을 추천해 드립니다.';
 
-    // 이전 카드 모두 지우고 새로 생성
+    // 이전 원석 카드 목록을 지우고 새로 생성합니다.
     recommendedStonesContainer.innerHTML = '';
     recommendedList.forEach(stone => {
         recommendedStonesContainer.innerHTML += `
             <div class="stone-card">
-                <!-- 원석 이미지: 클릭하면 새 탭으로 구매 페이지 열기 (href는 추후 실제 URL로 교체) -->
+                <!-- 원석 이미지: 클릭하면 새 탭으로 구매 페이지 열기 -->
                 <a href="#" target="_blank" class="stone-image-link">
                     <div class="stone-image-placeholder" style="background-image: url('${stone.image}');"></div>
                 </a>
-                <!-- 팔찌 이미지: 클릭하면 새 탭으로 구매 페이지 열기 (href는 추후 실제 URL로 교체) -->
+                <!-- 팔찌 이미지: 클릭하면 새 탭으로 구매 페이지 열기 -->
                 <a href="#" target="_blank" class="stone-image-link">
                     <div class="bracelet-image-placeholder" style="background-image: url('${stone.bracelet_image}');"></div>
                 </a>
@@ -226,6 +410,10 @@ form.addEventListener('submit', function(event) {
                 </div>
             </div>`;
     });
+
+    // 로딩이 끝나면 제출 버튼을 활성화 상태로 되돌립니다.
+    submitBtn.disabled = false;
+    submitBtn.innerText = originalBtnText;
 
     form.classList.add('hidden');
     resultSection.classList.remove('hidden');
