@@ -25,33 +25,32 @@ function setGender(gender) {
 }
 
 
-// 페이지가 켜졌을 때 기존에 저장해둔 API 키가 없다면 .env 파일에서 자동으로 읽어옵니다.
+// 페이지가 켜졌을 때 .env 파일에서 최신 API 키를 자동으로 읽어와 로컬 저장소에 동기화합니다.
 document.addEventListener('DOMContentLoaded', async () => {
-    let savedKey = localStorage.getItem('saju_api_key');
-    
-    // 로컬 저장소에 저장된 키가 없는 경우, .env 파일로부터 키를 자동으로 가져오기를 시도합니다.
-    if (!savedKey) {
-        try {
-            const response = await fetch('.env');
-            if (response.ok) {
-                const text = await response.text();
-                // .env 파일의 내용을 한 줄씩 나누어 SAJU_API_KEY 항목이 있는지 찾습니다.
-                const lines = text.split('\n');
-                for (let line of lines) {
-                    const trimmedLine = line.trim();
-                    if (trimmedLine.startsWith('SAJU_API_KEY=')) {
-                        const envKey = trimmedLine.split('=')[1]?.trim();
-                        if (envKey) {
-                            // 자동으로 가져온 키를 로컬 저장소에 저장하여 이후 사용 시에도 바로 적용되게 합니다.
-                            localStorage.setItem('saju_api_key', envKey);
-                            break;
-                        }
-                    }
+    try {
+        const response = await fetch('.env');
+        if (response.ok) {
+            const text = await response.text();
+            const lines = text.split('\n');
+            let envKey = null;
+            for (let line of lines) {
+                const trimmedLine = line.trim();
+                if (trimmedLine.startsWith('SAJU_API_KEY=')) {
+                    envKey = trimmedLine.split('=')[1]?.trim();
+                    break;
                 }
             }
-        } catch (error) {
-            console.log('.env 파일을 불러올 수 없어 기본 수동 키 등록 대기 상태로 전환합니다.', error);
+            if (envKey) {
+                const savedKey = localStorage.getItem('saju_api_key');
+                // 저장된 키가 없거나, .env에 설정된 최신 키와 다를 경우 자동으로 덮어씁니다.
+                if (savedKey !== envKey) {
+                    localStorage.setItem('saju_api_key', envKey);
+                    console.log('API 키가 최신 설정(.env) 정보로 동기화되었습니다.');
+                }
+            }
         }
+    } catch (error) {
+        console.log('.env 파일을 불러올 수 없어 로컬 기존 인증키를 유지하거나 대기 상태로 전환합니다.', error);
     }
 });
 
@@ -68,7 +67,7 @@ function parseGanji(ganjiStr) {
 
 // ✅ 한국천문연구원 API를 활용하여 음력 날짜를 양력 날짜로 변환해주는 비동기 함수입니다.
 async function convertLunarToSolar(year, month, day, apiKey) {
-    const apiUrl = `http://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getSolCalInfo?lunYear=${year}&lunMonth=${month}&lunDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}`;
+    const apiUrl = `https://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getSolCalInfo?lunYear=${year}&lunMonth=${month}&lunDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}&cb=${Date.now()}`;
     const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
     
     const response = await fetch(proxyUrl);
@@ -128,7 +127,7 @@ async function convertLunarToSolar(year, month, day, apiKey) {
 
 // ✅ 한국천문연구원 API를 활용하여 양력 날짜를 음력 날짜로 변환해주는 비동기 함수입니다.
 async function convertSolarToLunar(year, month, day, apiKey) {
-    const apiUrl = `http://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getLunCalInfo?solYear=${year}&solMonth=${month}&solDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}`;
+    const apiUrl = `https://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getLunCalInfo?solYear=${year}&solMonth=${month}&solDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}&cb=${Date.now()}`;
     const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
     
     const response = await fetch(proxyUrl);
