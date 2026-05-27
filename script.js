@@ -67,7 +67,7 @@ function parseGanji(ganjiStr) {
 
 // ✅ 한국천문연구원 API를 활용하여 음력 날짜를 양력 날짜로 변환해주는 비동기 함수입니다.
 async function convertLunarToSolar(year, month, day, apiKey) {
-    const apiUrl = `https://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getSolCalInfo?lunYear=${year}&lunMonth=${month}&lunDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}&cb=${Date.now()}`;
+    const apiUrl = `http://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getSolCalInfo?lunYear=${year}&lunMonth=${month}&lunDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}&cb=${Date.now()}`;
     const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
     
     const response = await fetch(proxyUrl);
@@ -127,7 +127,7 @@ async function convertLunarToSolar(year, month, day, apiKey) {
 
 // ✅ 한국천문연구원 API를 활용하여 양력 날짜를 음력 날짜로 변환해주는 비동기 함수입니다.
 async function convertSolarToLunar(year, month, day, apiKey) {
-    const apiUrl = `https://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getLunCalInfo?solYear=${year}&solMonth=${month}&solDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}&cb=${Date.now()}`;
+    const apiUrl = `http://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getLunCalInfo?solYear=${year}&solMonth=${month}&solDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}&cb=${Date.now()}`;
     const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
     
     const response = await fetch(proxyUrl);
