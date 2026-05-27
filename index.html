@@ -20,14 +20,19 @@
         <!-- 정보 입력 폼 -->
         <main>
             <form id="saju-form" class="input-form">
-                <!-- API 키 설정 버튼 -->
-                <div class="api-settings-container" style="text-align: right; margin-bottom: 5px;">
-                    <button type="button" id="btn-api-settings" class="api-settings-btn">⚙️ API 키 설정</button>
-                </div>
                 <!-- 이름 입력칸 추가 -->
                 <div class="form-group">
                     <label for="user-name">이름</label>
                     <input type="text" id="user-name" placeholder="이름을 입력하세요" required>
+                </div>
+                <!-- 성별 선택 UI 추가 -->
+                <div class="form-group">
+                    <label>성별</label>
+                    <div class="gender-toggle" style="display: flex; gap: 10px;">
+                        <button type="button" id="btn-male" class="toggle-btn active" onclick="setGender('male')">🙋‍♂️ 남성</button>
+                        <button type="button" id="btn-female" class="toggle-btn" onclick="setGender('female')">🙋‍♀️ 여성</button>
+                    </div>
+                    <input type="hidden" id="user-gender" value="male">
                 </div>
                 <div class="form-group">
                     <label>양력 / 음력</label>
@@ -122,6 +127,45 @@
                     </div>
                 </div>
 
+                <!-- 상세 음양력 정보 카드 영역 -->
+                <div id="lunar-solar-detail-section" class="lunar-solar-detail-box">
+                    <h3>상세 음양력 정보</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">양력 날짜</span>
+                            <span class="detail-value" id="detail-solar-date">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">음력 날짜</span>
+                            <span class="detail-value" id="detail-lunar-date">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">성별</span>
+                            <span class="detail-value" id="detail-gender">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">태어난 시간</span>
+                            <span class="detail-value" id="detail-birth-time">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">음력 간지</span>
+                            <span class="detail-value" id="detail-ganji">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">율리우스적일</span>
+                            <span class="detail-value" id="detail-julian">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API 원본 XML 응답 확인 영역 -->
+                <details id="api-raw-data-section" class="api-raw-data-box" style="margin-bottom: 40px; text-align: left;">
+                    <summary style="font-weight: 700; color: #4a5568; cursor: pointer; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 10px; background-color: #f8fafc; user-select: none; display: list-item; outline: none; transition: 0.2s;">📄 공공데이터 API 원본 데이터 (XML) 보기</summary>
+                    <div style="margin-top: 15px; background-color: #2d3748; color: #cbd5e0; padding: 20px; border-radius: 10px; overflow-x: auto; font-family: monospace; font-size: 13px; line-height: 1.6; border: 1px solid #1a202c;">
+                        <pre id="api-raw-xml" style="white-space: pre-wrap; word-break: break-all; margin: 0;"></pre>
+                    </div>
+                </details>
+
                 <!-- 오행 분포 그래프 영역 -->
                 <div class="element-distribution">
                     <h3>오행 분포</h3>
@@ -211,23 +255,6 @@
         </main>
     </div>
     
-    <!-- API 키 설정을 위한 모달 창 -->
-    <div id="api-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="close-api-modal">&times;</span>
-            <h3>공공데이터 API 설정</h3>
-            <p class="modal-desc">음력 생년월일 변환에 필요한 한국천문연구원 API 서비스 키(Service Key)를 입력해주세요.</p>
-            <div class="form-group" style="margin-bottom: 20px;">
-                <label for="api-key-input" style="font-size: 13px; font-weight: 500; color: #4a5568; display: block; margin-bottom: 8px;">서비스 키 (인증키)</label>
-                <input type="password" id="api-key-input" placeholder="발급받은 인증키를 입력하세요" style="width: 100%; padding: 12px; font-size: 14px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none;">
-            </div>
-            <div class="modal-buttons">
-                <button type="button" id="save-api-key-btn" class="modal-btn save-btn">저장하기</button>
-                <button type="button" id="delete-api-key-btn" class="modal-btn delete-btn">삭제</button>
-            </div>
-        </div>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>
