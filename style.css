@@ -54,28 +54,91 @@ header p { font-size: 14px; color: #666; margin-bottom: 40px; text-align: center
 /* 사주 4기둥 나란히 정렬 */
 .pillars-container {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     margin-bottom: 40px;
 }
 
-/* 각 기둥 카드 한 장의 디자인 */
+/* 개편된 4기둥 카드 디자인 */
 .pillar-card {
     flex: 1; /* 4장이 모두 동일한 너비를 가짐 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 20px;
+    border-radius: 15px;
+    padding: 20px 10px;
     background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
-.pillar-title { font-size: 13px; font-weight: 700; color: #718096; margin-bottom: 15px; }
-.pillar-hanja { margin-bottom: 15px; display: flex; align-items: baseline; gap: 5px; }
-.pillar-hanja .big-text { font-size: 32px; font-weight: 900; color: #1a202c; }
-.pillar-hanja .small-text { font-size: 14px; font-weight: 700; color: #718096; }
-.pillar-desc { font-size: 14px; color: #4a5568; margin-bottom: 20px; }
+.pillar-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
 
-/* 천간/지지 둥근 뱃지 모양 */
-.badges { display: flex; flex-direction: column; gap: 8px; }
-.badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; color: white; width: fit-content; }
+.pillar-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #4a5568;
+    background-color: #edf2f7;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    width: fit-content;
+}
+
+.pillar-gan, .pillar-zhi {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 8px 0;
+}
+
+.pillar-gan {
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.saju-char {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 4px 0;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.03);
+}
+
+/* 천간 지지 개별 오행별 글자 색상 */
+.char-wood { color: #2f855a !important; } /* 초록 */
+.char-fire { color: #c53030 !important; } /* 빨강 */
+.char-earth { color: #b7791f !important; } /* 황갈색 */
+.char-metal { color: #4a5568 !important; } /* 회색 */
+.char-water { color: #2b6cb0 !important; } /* 파랑 */
+
+.saju-ten-star {
+    font-size: 11px;
+    font-weight: 700;
+    color: #718096;
+    background-color: #f7fafc;
+    border: 1px solid #edf2f7;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.pillar-unseong {
+    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #4a5568;
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    width: 90%;
+    padding: 4px 0;
+    border-radius: 30px;
+}
 
 /* 오행 분포 그래프 전체 영역 */
 .element-distribution { margin-bottom: 40px; }
@@ -136,16 +199,6 @@ header p { font-size: 14px; color: #666; margin-bottom: 40px; text-align: center
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* 스마트폰과 같은 작은 화면(600px 이하)에 접속했을 때의 반응형 디자인 */
-@media (max-width: 600px) {
-    /* 4기둥 카드를 가로가 아닌 세로로 길게 정렬 */
-    .pillars-container { flex-direction: column; } 
-    /* 운세 카드 4개도 세로로 1줄씩 길게 정렬 */
-    .fortune-cards-grid { grid-template-columns: 1fr; }
-    .container { padding: 20px; }
-    .stone-image-placeholder, .bracelet-image-placeholder { height: 200px; }
-}
-
 /* 상세 음양력 정보 카드 디자인 */
 .lunar-solar-detail-box {
     background-color: #ffffff;
@@ -187,11 +240,122 @@ header p { font-size: 14px; color: #666; margin-bottom: 40px; text-align: center
     color: #2d3748;
 }
 
+/* 추가된 명리 상세 테이블 및 탭 스타일 */
+.saju-detail-table-section, .saju-relations-section, .saju-cycles-section {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    padding: 25px 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+.saju-detail-table-section h3, .saju-relations-section h3, .saju-cycles-section h3 {
+    font-size: 18px;
+    font-weight: 900;
+    color: #2d3748;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.saju-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+    min-width: 500px;
+}
+.saju-table th, .saju-table td {
+    padding: 12px 10px;
+    border: 1px solid #e2e8f0;
+}
+.saju-table th {
+    background-color: #f8fafc;
+    color: #4a5568;
+    font-weight: 700;
+}
+.saju-table td.td-label {
+    background-color: #f8fafc;
+    color: #4a5568;
+    font-weight: 700;
+    width: 120px;
+}
+.saju-table td.align-left {
+    text-align: left;
+    padding-left: 15px;
+    line-height: 1.6;
+}
+
+.mini-table {
+    min-width: 100%;
+}
+.cycle-table {
+    min-width: 600px;
+}
+.cycle-table tr.active-row {
+    background-color: #f0fff4;
+    font-weight: 700;
+}
+.cycle-table tr.active-row td {
+    border: 1px solid #c6f6d5;
+    color: #22543d;
+}
+
+.cycle-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+.cycle-tab-btn {
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    background: none;
+    color: #a0aec0;
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    transition: 0.2s;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.cycle-tab-btn.active {
+    color: #5a67d8;
+    border-bottom: 3px solid #5a67d8;
+    background-color: #ebf4ff;
+    padding-bottom: 7px;
+}
+.cycle-tab-btn:hover:not(.active) {
+    color: #4a5568;
+    background-color: #f7fafc;
+}
+.cycle-tip {
+    font-size: 13px;
+    color: #e53e3e;
+    text-align: left;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* 스마트폰과 같은 작은 화면(600px 이하)에 접속했을 때의 반응형 디자인 */
 @media (max-width: 600px) {
+    .pillars-container { flex-direction: column; } 
+    .fortune-cards-grid { grid-template-columns: 1fr; }
+    .container { padding: 20px; }
+    .stone-image-placeholder, .bracelet-image-placeholder { height: 200px; }
     .detail-grid {
         grid-template-columns: 1fr;
         gap: 12px;
     }
 }
+
 
 

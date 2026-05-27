@@ -68,61 +68,242 @@
                     <p id="result-sub-info" style="margin-top: 6px; font-size: 14px; color: #718096; font-weight: 500;"></p>
                 </div>
 
-                <!-- 사주 4기둥 카드 영역 -->
+                <!-- 사주 4기둥 카드 영역 (시주 - 일주 - 월주 - 연주 순) -->
                 <div class="pillars-container">
-                    <!-- 년주 카드 -->
-                    <div class="pillar-card">
-                        <div class="pillar-title">년주</div>
-                        <div class="pillar-hanja">
-                            <span class="big-text" id="year-kr">기미</span>
-                            <span class="small-text" id="year-hj">己未</span>
+                    <!-- 시주 카드 -->
+                    <div class="pillar-card" id="card-hour">
+                        <div class="pillar-title">시주 (時柱)</div>
+                        <div class="pillar-gan">
+                            <span class="saju-ten-star" id="hour-gan-star">정재</span>
+                            <span class="saju-char" id="hour-gan-char">戊</span>
                         </div>
-                        <div class="pillar-desc" id="year-desc">음 토(土) / 양띠</div>
-                        <div class="badges">
-                            <span class="badge stem-badge" id="year-stem-badge">천간 토(土)</span>
-                            <span class="badge branch-badge" id="year-branch-badge">지지 토(土)</span>
+                        <div class="pillar-zhi">
+                            <span class="saju-char" id="hour-zhi-char">寅</span>
+                            <span class="saju-ten-star" id="hour-zhi-star">겁재</span>
                         </div>
+                        <div class="pillar-unseong" id="hour-unseong">제왕</div>
                     </div>
                     
-                    <!-- 월주 카드 -->
-                    <div class="pillar-card">
-                        <div class="pillar-title">월주</div>
-                        <div class="pillar-hanja">
-                            <span class="big-text" id="month-kr">임신</span>
-                            <span class="small-text" id="month-hj">壬申</span>
-                        </div>
-                        <div class="pillar-desc" id="month-desc">양 수(水) / 원숭이띠</div>
-                        <div class="badges">
-                            <span class="badge stem-badge" id="month-stem-badge">천간 수(水)</span>
-                            <span class="badge branch-badge" id="month-branch-badge">지지 금(金)</span>
-                        </div>
-                    </div>
-
                     <!-- 일주 카드 -->
-                    <div class="pillar-card">
-                        <div class="pillar-title">일주</div>
-                        <div class="pillar-hanja">
-                            <span class="big-text" id="day-kr">갑인</span>
-                            <span class="small-text" id="day-hj">甲寅</span>
+                    <div class="pillar-card" id="card-day">
+                        <div class="pillar-title">일주 (日柱)</div>
+                        <div class="pillar-gan">
+                            <span class="saju-ten-star" id="day-gan-star">비견</span>
+                            <span class="saju-char" id="day-gan-char">乙</span>
                         </div>
-                        <div class="pillar-desc" id="day-desc">양 목(木) / 호랑이띠</div>
-                        <div class="badges">
-                            <span class="badge stem-badge" id="day-stem-badge">천간 목(木)</span>
-                            <span class="badge branch-badge" id="day-branch-badge">지지 목(木)</span>
+                        <div class="pillar-zhi">
+                            <span class="saju-char" id="day-zhi-char">巳</span>
+                            <span class="saju-ten-star" id="day-zhi-star">상관</span>
+                        </div>
+                        <div class="pillar-unseong" id="day-unseong">목욕</div>
+                    </div>
+
+                    <!-- 월주 카드 -->
+                    <div class="pillar-card" id="card-month">
+                        <div class="pillar-title">월주 (月柱)</div>
+                        <div class="pillar-gan">
+                            <span class="saju-ten-star" id="month-gan-star">편인</span>
+                            <span class="saju-char" id="month-gan-char">癸</span>
+                        </div>
+                        <div class="pillar-zhi">
+                            <span class="saju-char" id="month-zhi-char">酉</span>
+                            <span class="saju-ten-star" id="month-zhi-star">편관</span>
+                        </div>
+                        <div class="pillar-unseong" id="month-unseong">절</div>
+                    </div>
+
+                    <!-- 연주 카드 -->
+                    <div class="pillar-card" id="card-year">
+                        <div class="pillar-title">연주 (年柱)</div>
+                        <div class="pillar-gan">
+                            <span class="saju-ten-star" id="year-gan-star">편재</span>
+                            <span class="saju-char" id="year-gan-char">己</span>
+                        </div>
+                        <div class="pillar-zhi">
+                            <span class="saju-char" id="year-zhi-char">未</span>
+                            <span class="saju-ten-star" id="year-zhi-star">편재</span>
+                        </div>
+                        <div class="pillar-unseong" id="year-unseong">양</div>
+                    </div>
+                </div>
+
+                <!-- 심층 분석: 십성 & 12운성 테이블 영역 -->
+                <div class="saju-detail-table-section">
+                    <h3>심층 분석: 십성 & 12운성</h3>
+                    <div class="table-responsive">
+                        <table class="saju-table">
+                            <thead>
+                                <tr>
+                                    <th>구분</th>
+                                    <th>시주 (時柱)</th>
+                                    <th>일주 (日柱)</th>
+                                    <th>월주 (月柱)</th>
+                                    <th>연주 (年柱)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="td-label">천간 간지</td>
+                                    <td id="table-hour-gan">-</td>
+                                    <td id="table-day-gan">-</td>
+                                    <td id="table-month-gan">-</td>
+                                    <td id="table-year-gan">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-label">지지 간지</td>
+                                    <td id="table-hour-zhi">-</td>
+                                    <td id="table-day-zhi">-</td>
+                                    <td id="table-month-zhi">-</td>
+                                    <td id="table-year-zhi">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-label">천간십성</td>
+                                    <td id="table-hour-gan-star">-</td>
+                                    <td id="table-day-gan-star">비견 (일간)</td>
+                                    <td id="table-month-gan-star">-</td>
+                                    <td id="table-year-gan-star">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-label">정기지지십성</td>
+                                    <td id="table-hour-zhi-main-star">-</td>
+                                    <td id="table-day-zhi-main-star">-</td>
+                                    <td id="table-month-zhi-main-star">-</td>
+                                    <td id="table-year-zhi-main-star">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-label">지장간십성</td>
+                                    <td id="table-hour-zhi-all-stars">-</td>
+                                    <td id="table-day-zhi-all-stars">-</td>
+                                    <td id="table-month-zhi-all-stars">-</td>
+                                    <td id="table-year-zhi-all-stars">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-label">봉법12운성</td>
+                                    <td id="table-hour-bong-unseong">-</td>
+                                    <td id="table-day-bong-unseong">-</td>
+                                    <td id="table-month-bong-unseong">-</td>
+                                    <td id="table-year-bong-unseong">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-label">거법12운성</td>
+                                    <td id="table-hour-geo-unseong">-</td>
+                                    <td id="table-day-geo-unseong">-</td>
+                                    <td id="table-month-geo-unseong">-</td>
+                                    <td id="table-year-geo-unseong">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 지지 형·충·회·합 및 신살 해석 영역 -->
+                <div class="saju-relations-section">
+                    <h3>지지 형·충·회·합 및 신살 해석</h3>
+                    <div class="table-responsive">
+                        <table class="saju-table mini-table">
+                            <tbody>
+                                <tr>
+                                    <td class="td-label" style="width: 150px;">천간 특수관계</td>
+                                    <td id="relations-gan-special" class="align-left">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-label">지장간</td>
+                                    <td id="relations-jijanggan" class="align-left">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-label">합(방합/삼합/육합/암합)</td>
+                                    <td id="relations-hap" class="align-left">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-label">형·충·파·해·원진·귀문</td>
+                                    <td id="relations-clash-harm" class="align-left">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-label">종합 신살</td>
+                                    <td id="relations-all-sals" class="align-left">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 대운, 세운, 월운 탭 뷰 영역 -->
+                <div class="saju-cycles-section">
+                    <div class="cycle-tabs">
+                        <button type="button" class="cycle-tab-btn active" onclick="switchCycleTab('daeun')">대운 (大運)</button>
+                        <button type="button" class="cycle-tab-btn" onclick="switchCycleTab('seun')">세운 (歲運)</button>
+                        <button type="button" class="cycle-tab-btn" onclick="switchCycleTab('wolun')">월운 (月運)</button>
+                    </div>
+                    
+                    <!-- 대운 콘텐츠 -->
+                    <div id="tab-daeun" class="cycle-tab-content">
+                        <h3>대운 (10년마다 바뀌는 인생의 큰 흐름)</h3>
+                        <p class="cycle-tip">● 표시는 현재 사용자가 위치해 있는 대운 구간입니다.</p>
+                        <div class="table-responsive">
+                            <table class="saju-table cycle-table">
+                                <thead>
+                                    <tr>
+                                        <th>나이 범위</th>
+                                        <th>간지</th>
+                                        <th>천간</th>
+                                        <th>지지</th>
+                                        <th>시작 연도</th>
+                                        <th>현재</th>
+                                        <th>신살</th>
+                                        <th>12운성</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="daeun-tbody">
+                                    <!-- JS 동적 로드 -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
-                    <!-- 시주 카드 -->
-                    <div class="pillar-card">
-                        <div class="pillar-title">시주</div>
-                        <div class="pillar-hanja">
-                            <span class="big-text" id="hour-kr">병인</span>
-                            <span class="small-text" id="hour-hj">丙寅</span>
+                    <!-- 세운 콘텐츠 -->
+                    <div id="tab-seun" class="cycle-tab-content hidden">
+                        <h3>세운 (매년 들어오는 해의 흐름 - 최근 10년 기준)</h3>
+                        <div class="table-responsive">
+                            <table class="saju-table cycle-table">
+                                <thead>
+                                    <tr>
+                                        <th>연도</th>
+                                        <th>간지</th>
+                                        <th>천간</th>
+                                        <th>지지</th>
+                                        <th>신살</th>
+                                        <th>12운성</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="seun-tbody">
+                                    <!-- JS 동적 로드 -->
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="pillar-desc" id="hour-desc">양 화(火) / 호랑이띠</div>
-                        <div class="badges">
-                            <span class="badge stem-badge" id="hour-stem-badge">천간 화(火)</span>
-                            <span class="badge branch-badge" id="hour-branch-badge">지지 목(木)</span>
+                    </div>
+
+                    <!-- 월운 콘텐츠 -->
+                    <div id="tab-wolun" class="cycle-tab-content hidden">
+                        <h3>월운 (한 해 속 매월 들어오는 월의 흐름 - 현재 연도 기준)</h3>
+                        <div class="table-responsive">
+                            <table class="saju-table cycle-table">
+                                <thead>
+                                    <tr>
+                                        <th>월</th>
+                                        <th>월명</th>
+                                        <th>간지</th>
+                                        <th>천간</th>
+                                        <th>지지</th>
+                                        <th>신살</th>
+                                        <th>12운성</th>
+                                        <th>천간십성</th>
+                                        <th>지지십성</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wolun-tbody">
+                                    <!-- JS 동적 로드 -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
