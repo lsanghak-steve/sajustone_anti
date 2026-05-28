@@ -67,18 +67,17 @@ function parseGanji(ganjiStr) {
 
 // ✅ 한국천문연구원 API를 활용하여 음력 날짜를 양력 날짜로 변환해주는 비동기 함수입니다.
 async function convertLunarToSolar(year, month, day, apiKey) {
-    const apiUrl = `http://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getSolCalInfo?lunYear=${year}&lunMonth=${month}&lunDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}&cb=${Date.now()}`;
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
+    const apiUrl = `https://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getSolCalInfo?lunYear=${year}&lunMonth=${month}&lunDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}&cb=${Date.now()}`;
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
     
     const response = await fetch(proxyUrl);
     if (!response.ok) {
-        throw new Error('프록시 서버 응답에 실패했습니다.');
+        throw new Error('프록시 서버 응답에 실패했습니다. (CORS 우회 오류)');
     }
     
-    const data = await response.json();
-    const xmlString = data.contents;
+    const xmlString = await response.text();
     
-    if (!xmlString || xmlString.includes('Unauthorized') || xmlString.includes('unauthorized') || xmlString.trim() === 'Unauthorized') {
+    if (!xmlString || xmlString.includes('Unauthorized') || xmlString.includes('unauthorized') || xmlString.trim() === 'Unauthorized' || xmlString.includes('Server-side requests')) {
         throw new Error('공공데이터 API 인증키가 아직 활성화되지 않았거나 승인 대기 중입니다. (포털에서 가입 완료 및 승인 후 실제 연동 적용까지 약 1~2시간 가량 소요될 수 있습니다.)');
     }
     
@@ -113,8 +112,8 @@ async function convertLunarToSolar(year, month, day, apiKey) {
     
     return {
         solYear,
-        solMonth: solMonth.padStart(2, '0'),
-        solDay: solDay.padStart(2, '0'),
+        solMonth: String(solMonth).padStart(2, '0'),
+        solDay: String(solDay).padStart(2, '0'),
         lunLeapmonth,
         solWeek,
         lunSecha,
@@ -127,18 +126,17 @@ async function convertLunarToSolar(year, month, day, apiKey) {
 
 // ✅ 한국천문연구원 API를 활용하여 양력 날짜를 음력 날짜로 변환해주는 비동기 함수입니다.
 async function convertSolarToLunar(year, month, day, apiKey) {
-    const apiUrl = `http://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getLunCalInfo?solYear=${year}&solMonth=${month}&solDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}&cb=${Date.now()}`;
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
+    const apiUrl = `https://apis.data.go.kr/B090041/openapi/service/LrsrCldInfoService/getLunCalInfo?solYear=${year}&solMonth=${month}&solDay=${day}&ServiceKey=${encodeURIComponent(apiKey)}&cb=${Date.now()}`;
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
     
     const response = await fetch(proxyUrl);
     if (!response.ok) {
-        throw new Error('프록시 서버 응답에 실패했습니다.');
+        throw new Error('프록시 서버 응답에 실패했습니다. (CORS 우회 오류)');
     }
     
-    const data = await response.json();
-    const xmlString = data.contents;
+    const xmlString = await response.text();
     
-    if (!xmlString || xmlString.includes('Unauthorized') || xmlString.includes('unauthorized') || xmlString.trim() === 'Unauthorized') {
+    if (!xmlString || xmlString.includes('Unauthorized') || xmlString.includes('unauthorized') || xmlString.trim() === 'Unauthorized' || xmlString.includes('Server-side requests')) {
         throw new Error('공공데이터 API 인증키가 아직 활성화되지 않았거나 승인 대기 중입니다. (포털에서 가입 완료 및 승인 후 실제 연동 적용까지 약 1~2시간 가량 소요될 수 있습니다.)');
     }
     
@@ -173,8 +171,8 @@ async function convertSolarToLunar(year, month, day, apiKey) {
     
     return {
         lunYear,
-        lunMonth: lunMonth.padStart(2, '0'),
-        lunDay: lunDay.padStart(2, '0'),
+        lunMonth: String(lunMonth).padStart(2, '0'),
+        lunDay: String(lunDay).padStart(2, '0'),
         lunLeapmonth,
         solWeek,
         lunSecha,
